@@ -18,27 +18,21 @@
 #
 # * Update documentation
 #
-class logstash::config( $logstash_home = '/usr/local/logstash',
-  $logstash_etc = '/etc/logstash',
-  $logstash_log = '/var/log/logstash',
-  $logstash_transport = 'amqp',
-  $logstash_jar_provider = 'package',
-  $logstash_version = '1.1.5',
-  $logstash_verbose = 'no',
-  $logstash_user  = 'logstash',
-  $logstash_group = 'logstash',
-  $elasticsearch_provider = 'external',
-  $elasticsearch_host = '127.0.0.1',
-  $redis_provider = 'external',
-  $redis_package = 'redis',
-  $redis_version = '2.4.15',
-  $redis_host = '127.0.0.1',
-  $redis_port = '6379',
-  $redis_key = 'logstash',
-  $java_provider = 'package',
-  $java_package = 'java-1.6.0-openjdk',
-  $java_home = '/usr/lib/jvm/jre-1.6.0-openjdk.x86_64'
-) {
+class logstash::config(
+  $logstash_home                = $logstash::params::logstash_home,
+  $logstash_etc                 = $logstash::params::logstash_etc,
+  $logstash_log                 = $logstash::params::logstash_log,
+  $logstash_jar_provider        = $logstash::params::logstash_jar_provider,
+  $logstash_version             = $logstash::params::logstash_version,
+  $logstash_verbose             = $logstash::params::logstash_verbose,
+  $logstash_user                = $logstash::params::logstash_user,
+  $logstash_group               = $logstash::params::logstash_group,
+  $elasticsearch_provider       = $logstash::params::elasticsearch_provider,
+  $elasticsearch_host           = $logstash::params::elasticsearch_host,
+  $java_provider                = $logstash::params::java_provider,
+  $java_package                 = $logstash::params::java_package,
+  $java_home                    = $logstash::params::java_home
+) inherits logstash::params {
 
   # just trying to make the fq variable a little less rediculous
   $user = $logstash_user
@@ -48,7 +42,6 @@ class logstash::config( $logstash_home = '/usr/local/logstash',
   file { $logstash_home:
     ensure   => 'directory',
   }
-
   file { "${logstash_home}/bin/":
     ensure  => 'directory',
     require => File[$logstash_home],
@@ -57,12 +50,10 @@ class logstash::config( $logstash_home = '/usr/local/logstash',
     ensure  => 'directory',
     require => File[$logstash_home],
   }
-
-  file { "$logstash_etc":
+  file { $logstash_etc:
     ensure  => 'directory',
   }
-
-  file { "$logstash_log":
+  file { $logstash_log:
     ensure   => 'directory',
     recurse  => true,
   }
@@ -77,7 +68,9 @@ class logstash::config( $logstash_home = '/usr/local/logstash',
 
   # create the service user & group if required
   class { 'logstash::user':
-    logstash_homeroot => $logstash::config::logstash_home
+    user        => $user,
+    group       => $group,
+    homeroot    => $logstash_home,
   }
 }
 

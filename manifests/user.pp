@@ -2,33 +2,25 @@
 #
 # logstash_homeroot must be passed.
 class logstash::user (
-  $logstash_homeroot = undef
+  $user                = $logstash::params::logstash_user,
+  $group               = $logstash::params::logstash_group,
+  $homeroot            = $logstash::params::logstash_homeroot
 ) {
-
-  # make sure the logstash::config class is declared before logstash::user
-  Class['logstash::config'] -> Class['logstash::user']
-
-  User {
+  @user { $user:
     ensure     => present,
+    comment     => 'logstash system account',
+    uid         => '3300',
+    home        => "${homeroot}/logstash",
     managehome => true,
     shell      => '/bin/false',
-    system     => true
+    system     => true,
+    tag         => 'logstash',
   }
 
-  Group {
+  @group { $group:
     ensure  => present,
-    require => User[$logstash::config::user]
-  }
-
-  @user { $logstash::config::user:
-    comment => 'logstash system account',
+    gid     => '3300',
+    require => User[$user],
     tag     => 'logstash',
-    uid     => '3300',
-    home    => "${logstash_homeroot}/logstash";
-  }
-
-  @group { $logstash::config::group:
-    gid => '3300',
-    tag => 'logstash';
   }
 }
