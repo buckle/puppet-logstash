@@ -56,14 +56,14 @@ class logstash::redis (
     }
 
     # our redis config file
-    file { "$redis_conf":
+    file { $redis_conf:
       ensure  => present,
       content => template('logstash/redis.conf.erb'),
       require => Package[$redis_package],
     }
 
     # make sure the service is defined & running
-    service { "$redis_service":
+    service { $redis_service:
       ensure    => 'running',
       hasstatus => true,
       enable    => true,

@@ -21,7 +21,7 @@
 ### END INIT INFO
  
 # Amount of memory for Java
-JAVAMEM=256M
+JAVAMEM=<%=java_memory %>
  
 # Location of logstash files
 LOCATION=<%=logstash_home %>
@@ -30,7 +30,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DESC="Logstash Daemon"
 NAME=java
 DAEMON=<%= java_home %>/bin/java
-CONFIG=<%=logstash_etc %>/logstash.conf
+CONFIG=<%=logstash_etc %>
 LOGFILE="<%=logstash_log %>/logstash.log"
 PATTERNSPATH="<%=logstash_home %>/patterns"
 JARNAME=logstash-<%=logstash_version %>-monolithic.jar

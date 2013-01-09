@@ -30,15 +30,12 @@
 class logstash::package(
   $logstash_home            = $logstash::params::logstash_home,
   $logstash_version         = $logstash::params::logstash_version,
-  $logstash_provider        = 'http',
-  $logstash_baseurl         = 'https://logstash.objects.dreamhost.com/release',
-  $java_provider            = 'external',
-  $java_package             = 'java-1.6.0-openjdk' )
-{
-
-  # naughtly, the logstash::config class creates the $logstash_home directory,
-  # make sure the directory exists!
-  Class['logstash::config'] -> Class['logstash::package']
+  $logstash_provider        = $logstash::params::logstash_jar_provider,
+  $logstash_baseurl         = $logstash::params::logstash_baseurl,
+  $java_provider            = $logstash::params::java_provider,
+  $java_package             = $logstash::params::java_package
+) {
+  Class['logstash::install'] -> Class['logstash::package']
 
   $logstash_jar = sprintf("%s-%s-%s", "logstash", $logstash_version, "monolithic.jar")
   $jar = "$logstash_home/$logstash_jar"

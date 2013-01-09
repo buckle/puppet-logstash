@@ -31,8 +31,11 @@ class logstash::server (
   $logstash_user              = $logstash::params::logstash_user,
   $logstash_group             = $logstash::params::logstash_group,
   $elasticsearch_provider     = $logstash::params::elasticsearch_provider,
-  $java_home                  = $logstash::params::java_home
+  $java_home                  = $logstash::params::java_home,
+  $java_memory                = $logstash::params::java_memory
 ) {
+
+  Class['logstash::install'] -> Class['logstash::server']
 
   if ($logstash_web) {
     $add_args = " -- web --backend elasticsearch:///?local"
@@ -43,45 +46,7 @@ class logstash::server (
   User  <| tag == 'logstash' |>
   Group <| tag == 'logstash' |>
 
-  # create the config file based on the transport we are using
-  # (this could also be extended to use different configs)
-  case  $logstash_transport {
-    /^redis$/: { $conf_content = template('logstash/indexer-input-redis.conf.erb',
-                                                  'logstash/indexer-filter.conf.erb',
-                                                  'logstash/indexer-output.conf.erb') }
-    /^amqp$/:  { $conf_content = template('logstash/indexer-input-amqp.conf.erb',
-                                                  'logstash/indexer-filter.conf.erb',
-                                                  'logstash/indexer-output.conf.erb') }
-    default:   { $conf_content = template('logstash/indexer-input-amqp.conf.erb',
-                                                  'logstash/indexer-filter.conf.erb',
-                                                  'logstash/indexer-output.conf.erb') }
-  }
 
-  file { "${logstash_etc}/logstash.conf":
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => $conf_content,
-    notify  => Service['logstash-server'],
-  }
-
-  # if we're running with elasticsearch embedded, make sure the data dir exists
-  if $elasticsearch_provider == 'embedded' {
-    file { "${logstash_home}/data/elasticsearch":
-      ensure => directory,
-      owner  => $logstash_user,
-      group  => $logstash_group,
-      before => Service['logstash-server'],
-      require => File["${logstash_home}/data"],
-    }
-
-    file { "${logstash_home}/data":
-      ensure => directory,
-      owner  => $logstash_user,
-      group  => $logstash_group,
-    }
-  }
   file { '/etc/rc.d/init.d/logstash-server':
     ensure  => 'file',
     owner   => 'root',

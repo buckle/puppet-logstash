@@ -53,7 +53,7 @@ class logstash (
   $logstash_verbose             = $logstash::params::logstash_verbose,
   $logstash_user                = $logstash::params::logstash_user,
   $logstash_group               = $logstash::params::logstash_group,
-  $logstash_web                  = $logstash::params::logstash_web,
+  $logstash_web                 = $logstash::params::logstash_web,
   $elasticsearch_provider       = $logstash::params::elasticsearch_provider,
   $elasticsearch_host           = $logstash::params::elasticsearch_host,
   $redis_provider               = $logstash::params::redis_provider,
@@ -64,9 +64,10 @@ class logstash (
   $redis_key                    = $logstash::params::redis_key,
   $java_provider                = $logstash::params::java_provider,
   $java_package                 = $logstash::params::java_package,
-  $java_home                    = $logstash::params::java_home
+  $java_home                    = $logstash::params::java_home,
+  $java_memory                  = $logstash::params::java_memory
 ) inherits logstash::params {
-  class { 'logstash::config':
+  class { 'logstash::install':
     logstash_home                => $logstash_home,
     logstash_etc                 => $logstash_etc,
     logstash_log                 => $logstash_log,
@@ -93,6 +94,7 @@ class logstash (
     logstash_user               => $logstash_user,
     logstash_group              => $logstash_group,
     java_home                   => $java_home,
+    java_memory                 => $java_memory,
     elasticsearch_provider      => $elasticsearch_provider,
   }
 
