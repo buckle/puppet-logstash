@@ -20,7 +20,7 @@
 #
 # * Update documentation
 #
-class logstash::server (
+class logstash::service (
   $logstash_home              = $logstash::params::logstash_home,
   $logstash_log               = $logstash::params::logstash_log,
   $logstash_etc               = $logstash::params::logstash_etc,
@@ -35,7 +35,7 @@ class logstash::server (
   $java_memory                = $logstash::params::java_memory
 ) {
 
-  Class['logstash::install'] -> Class['logstash::server']
+  Class['logstash::install'] -> Class['logstash::package'] -> Class['logstash::service']
 
   if ($logstash_web) {
     $add_args = " -- web --backend elasticsearch:///?local"

@@ -1,6 +1,6 @@
 class logstash::params {
   $logstash_home                  = '/opt/logstash'
-  $logstash_etc                   = '/etc/logstash/conf.d/' #The trailing / is important (directory vs. file)
+  $logstash_etc                   = ['/etc/logstash/','/etc/logstash/conf.d/'] #The trailing / is important (directory vs. file)
   $logstash_log                   = '/var/log/logstash'
   $logstash_transport             = 'amqp'
   $logstash_jar_provider          = 'package'

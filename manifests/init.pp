@@ -83,7 +83,7 @@ class logstash (
     java_home                    => $java_home
   }
 
-  class { 'logstash::server':
+  class { 'logstash::service':
     logstash_home               => $logstash_home,
     logstash_log                => $logstash_log,
     logstash_etc                => $logstash_etc,

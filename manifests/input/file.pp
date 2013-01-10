@@ -8,39 +8,39 @@
 #
 # === Parameters
 #
-# [*add_field*] 
+# [*add_field*]
 #   Add a field to an event
 #   Value type is hash
 #   Default value: {}
 #   This variable is optional
 #
-# [*debug*] 
+# [*debug*]
 #   Set this to true to enable debugging on an input.
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*discover_interval*] 
+# [*discover_interval*]
 #   How often we expand globs to discover new files to watch.
 #   Value type is number
 #   Default value: 15
 #   This variable is optional
 #
-# [*exclude*] 
+# [*exclude*]
 #   Exclusions (matched against the filename, not full path). Globs are
-#   valid here, too. For example, if you have  path =&gt; "/var/log/*"  
+#   valid here, too. For example, if you have  path =&gt; "/var/log/*"
 #   you might want to exclude gzipped files:  exclude =&gt; "*.gz"
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*format*] 
+# [*format*]
 #   The format of input data (plain, json, json_event)
 #   Value can be any of: "plain", "json", "json_event"
 #   Default value: None
 #   This variable is optional
 #
-# [*message_format*] 
+# [*message_format*]
 #   If format is "json", an event sprintf string to build what the display
 #   @message should be given (defaults to the raw JSON). sprintf format
 #   strings look like %{fieldname} or %{@metadata}.  If format is
@@ -50,14 +50,14 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*path*] 
+# [*path*]
 #   The path to the file to use as an input. You can use globs here, such
 #   as "/var/log/*.log" Paths must be absolute and cannot be relative.
 #   Value type is array
 #   Default value: None
 #   This variable is required
 #
-# [*sincedb_path*] 
+# [*sincedb_path*]
 #   Where to write the since database (keeps track of the current position
 #   of monitored log files). Defaults to the value of environment variable
 #   "$SINCEDB_PATH" or "$HOME/.sincedb".
@@ -65,14 +65,14 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*sincedb_write_interval*] 
+# [*sincedb_write_interval*]
 #   How often to write a since database with the current position of
 #   monitored log files.
 #   Value type is number
 #   Default value: 15
 #   This variable is optional
 #
-# [*start_position*] 
+# [*start_position*]
 #   Choose where logstash starts initially reading files - at the
 #   beginning or at the end. The default behavior treats files like live
 #   streams and thus starts at the end. If you have old data you want to
@@ -83,7 +83,7 @@
 #   Default value: "end"
 #   This variable is optional
 #
-# [*stat_interval*] 
+# [*stat_interval*]
 #   How often we stat files to see if they have been modified. Increasing
 #   this interval will decrease the number of system calls we make, but
 #   increase the time to detect new log lines.
@@ -91,14 +91,14 @@
 #   Default value: 1
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Add any number of arbitrary tags to your event.  This can help with
 #   processing later.
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   Label this input with a type. Types are used mainly for filter
 #   activation.  If you create an input with type "foobar", then only
 #   filters which also have type "foobar" will act on them.  The type is
@@ -209,17 +209,17 @@ define logstash::input::file(
     }
   }
 
-  if $message_format { 
+  if $message_format {
     validate_string($message_format)
     $opt_message_format = "  message_format => \"${message_format}\"\n"
   }
 
-  if $sincedb_path { 
+  if $sincedb_path {
     validate_string($sincedb_path)
     $opt_sincedb_path = "  sincedb_path => \"${sincedb_path}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -228,11 +228,11 @@ define logstash::input::file(
 
   file { "${logstash::params::configdir}/input_file_${name}":
     ensure  => present,
-    content => "input {\n file {\n${opt_add_field}${opt_debug}${opt_discover_interval}${opt_exclude}${opt_format}${opt_message_format}${opt_path}${opt_sincedb_path}${opt_sincedb_write_interval}${opt_start_position}${opt_stat_interval}${opt_tags}${opt_type} }\n}\n",
+    content => "input {\n file {\n${opt_add_field}${opt_debug}${discover_interval}${opt_exclude}${opt_format}${opt_message_format}${opt_path}${opt_sincedb_path}${sincedb_write_interval}${opt_start_position}${stat_interval}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }

@@ -78,6 +78,7 @@ class logstash::install(
   # make sure we have a logstash jar (& dependencies, if we want)
   class { 'logstash::package':
     logstash_home     => $logstash_home,
+    logstash_version  => $logstash_version,
     logstash_provider => $logstash_jar_provider,
     java_provider     => $java_provider,
     java_package      => $java_package,

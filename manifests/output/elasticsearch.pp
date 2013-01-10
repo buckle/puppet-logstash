@@ -14,20 +14,20 @@
 #
 # === Parameters
 #
-# [*bind_host*] 
+# [*bind_host*]
 #   The name/address of the host to bind to for ElasticSearch clustering
 #   Value type is string
 #   Default value: None
 #   This variable is optional
 #
-# [*cluster*] 
+# [*cluster*]
 #   The name of your cluster if you set it on the ElasticSearch side.
 #   Useful for discovery.
 #   Value type is string
 #   Default value: None
 #   This variable is optional
 #
-# [*embedded*] 
+# [*embedded*]
 #   Run the elasticsearch server embedded in this process. This option is
 #   useful if you want to run a single logstash process that handles log
 #   processing and indexing; it saves you from needing to run a separate
@@ -36,7 +36,7 @@
 #   Default value: false
 #   This variable is optional
 #
-# [*embedded_http_port*] 
+# [*embedded_http_port*]
 #   If you are running the embedded elasticsearch server, you can set the
 #   http port it listens on here; it is not common to need this setting
 #   changed from default.
@@ -44,20 +44,20 @@
 #   Default value: "9200-9300"
 #   This variable is optional
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*fields*] 
+# [*fields*]
 #   Only handle events with all of these fields. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*host*] 
+# [*host*]
 #   The name/address of the host to use for ElasticSearch unicast
 #   discovery This is only required if the normal multicast/cluster
 #   discovery stuff won't work in your environment.
@@ -65,7 +65,7 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*index*] 
+# [*index*]
 #   The index to write events to. This can be dynamic using the %{foo}
 #   syntax. The default value will partition your indices by day so you
 #   can more easily delete old data or only search specific date ranges.
@@ -73,7 +73,7 @@
 #   Default value: "logstash-%{+YYYY.MM.dd}"
 #   This variable is optional
 #
-# [*index_type*] 
+# [*index_type*]
 #   The index type to write events to. Generally you should try to write
 #   only similar events to the same 'type'. String expansion '%{foo}'
 #   works here.
@@ -81,35 +81,35 @@
 #   Default value: "%{@type}"
 #   This variable is optional
 #
-# [*max_inflight_requests*] 
-#   Configure the maximum number of in-flight requests to ElasticSearch. 
+# [*max_inflight_requests*]
+#   Configure the maximum number of in-flight requests to ElasticSearch.
 #   Note: This setting may be removed in the future.
 #   Value type is number
 #   Default value: 50
 #   This variable is optional
 #
-# [*node_name*] 
+# [*node_name*]
 #   The node name ES will use when joining a cluster.  By default, this is
 #   generated internally by the ES client.
 #   Value type is string
 #   Default value: None
 #   This variable is optional
 #
-# [*port*] 
+# [*port*]
 #   The port for ElasticSearch transport to use. This is not the
 #   ElasticSearch REST API port (normally 9200).
 #   Value type is number
 #   Default value: 9300
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this output will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -191,42 +191,42 @@ define logstash::output::elasticsearch(
     }
   }
 
-  if $index { 
+  if $index {
     validate_string($index)
     $opt_index = "  index => \"${index}\"\n"
   }
 
-  if $host { 
+  if $host {
     validate_string($host)
     $opt_host = "  host => \"${host}\"\n"
   }
 
-  if $index_type { 
+  if $index_type {
     validate_string($index_type)
     $opt_index_type = "  index_type => \"${index_type}\"\n"
   }
 
-  if $embedded_http_port { 
+  if $embedded_http_port {
     validate_string($embedded_http_port)
     $opt_embedded_http_port = "  embedded_http_port => \"${embedded_http_port}\"\n"
   }
 
-  if $node_name { 
+  if $node_name {
     validate_string($node_name)
     $opt_node_name = "  node_name => \"${node_name}\"\n"
   }
 
-  if $bind_host { 
+  if $bind_host {
     validate_string($bind_host)
     $opt_bind_host = "  bind_host => \"${bind_host}\"\n"
   }
 
-  if $cluster { 
+  if $cluster {
     validate_string($cluster)
     $opt_cluster = "  cluster => \"${cluster}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -235,11 +235,11 @@ define logstash::output::elasticsearch(
 
   file { "${logstash::params::configdir}/output_elasticsearch_${name}":
     ensure  => present,
-    content => "output {\n elasticsearch {\n${opt_bind_host}${opt_cluster}${opt_embedded}${opt_embedded_http_port}${opt_exclude_tags}${opt_fields}${opt_host}${opt_index}${opt_index_type}${opt_max_inflight_requests}${opt_node_name}${opt_port}${opt_tags}${opt_type} }\n}\n",
+    content => "output {\n elasticsearch {\n${opt_bind_host}${opt_cluster}${opt_embedded}${opt_embedded_http_port}${opt_exclude_tags}${opt_fields}${opt_host}${opt_index}${opt_index_type}${max_inflight_requests}${opt_node_name}${port}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }

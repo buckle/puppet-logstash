@@ -30,7 +30,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DESC="Logstash Daemon"
 NAME=java
 DAEMON=<%= java_home %>/bin/java
-CONFIG=<%=logstash_etc %>
+CONFIG=<%=logstash_etc.last %>
 LOGFILE="<%=logstash_log %>/logstash.log"
 PATTERNSPATH="<%=logstash_home %>/patterns"
 JARNAME=logstash-<%=logstash_version %>-monolithic.jar

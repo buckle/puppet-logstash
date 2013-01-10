@@ -10,7 +10,7 @@
 #
 # === Parameters
 #
-# [*(?-mix:[A-Za-z0-9_-]+)*] 
+# [*(?-mix:[A-Za-z0-9_-]+)*]
 #   Any existing field name can be used as a config name here for matching
 #   against.  # this config: foo =&gt; "some pattern"  # same as: match
 #   =&gt; [ "foo", "some pattern" ]
@@ -18,7 +18,7 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*add_field*] 
+# [*add_field*]
 #   If this filter is successful, add any arbitrary fields to this event.
 #   Example:  filter {   myfilter {     add_field =&gt; [ "sample", "Hello
 #   world, from %{@source}" ]   } }    On success, myfilter will then add
@@ -28,7 +28,7 @@
 #   Default value: {}
 #   This variable is optional
 #
-# [*add_tag*] 
+# [*add_tag*]
 #   If this filter is successful, add arbitrary tags to the event. Tags
 #   can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     add_tag =&gt; [
@@ -38,7 +38,7 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*break_on_match*] 
+# [*break_on_match*]
 #   Break on first match. The first successful match by grok will result
 #   in the filter being finished. If you want grok to try all patterns
 #   (maybe you are parsing different things), then set this to false.
@@ -46,7 +46,7 @@
 #   Default value: true
 #   This variable is optional
 #
-# [*drop_if_match*] 
+# [*drop_if_match*]
 #   Drop if matched. Note, this feature may not stay. It is preferable to
 #   combine grok + grep filters to do parsing + dropping.  requested in:
 #   googlecode/issue/26
@@ -54,32 +54,32 @@
 #   Default value: false
 #   This variable is optional
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*keep_empty_captures*] 
+# [*keep_empty_captures*]
 #   If true, keep empty captures as event fields.
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*match*] 
+# [*match*]
 #   A hash of matches of field =&gt; value
 #   Value type is hash
 #   Default value: {}
 #   This variable is optional
 #
-# [*named_captures_only*] 
+# [*named_captures_only*]
 #   If true, only store named captures from grok.
 #   Value type is boolean
 #   Default value: true
 #   This variable is optional
 #
-# [*pattern*] 
+# [*pattern*]
 #   Specify a pattern to parse with. This will match the '@message' field.
 #   If you want to match other fields than @message, use the 'match'
 #   setting. Multiple patterns is fine.
@@ -87,7 +87,7 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*patterns_dir*] 
+# [*patterns_dir*]
 #   logstash ships by default with a bunch of patterns, so you don't
 #   necessarily need to define this yourself unless you are adding
 #   additional patterns.  Pattern files are plain text with format:  NAME
@@ -96,7 +96,7 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*remove_tag*] 
+# [*remove_tag*]
 #   If this filter is successful, remove arbitrary tags from the event.
 #   Tags can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     remove_tag =&gt; [
@@ -107,21 +107,21 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*singles*] 
+# [*singles*]
 #   If true, make single-value fields simply that value, not an array
 #   containing that one value.
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this filter will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -133,7 +133,7 @@
 #   The order variable decides in which sequence the filters are loaded.
 #   Value type is number
 #   Default value: 10
-#   This variable is optional  
+#   This variable is optional
 #
 #
 # === Examples
@@ -253,7 +253,7 @@ define logstash::filter::grok(
     }
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -267,6 +267,6 @@ define logstash::filter::grok(
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
