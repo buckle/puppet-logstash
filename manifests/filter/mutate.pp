@@ -1,13 +1,13 @@
 # == Define: logstash::filter::mutate
 #
 #   The mutate filter allows you to do general mutations to fields. You
-#   can rename, remove, replace, and modify fields in your events. 
+#   can rename, remove, replace, and modify fields in your events.
 #   TODO(sissel): Support regexp replacements like String#gsub ?
 #
 #
 # === Parameters
 #
-# [*add_field*] 
+# [*add_field*]
 #   If this filter is successful, add any arbitrary fields to this event.
 #   Example:  filter {   myfilter {     add_field =&gt; [ "sample", "Hello
 #   world, from %{@source}" ]   } }    On success, myfilter will then add
@@ -17,7 +17,7 @@
 #   Default value: {}
 #   This variable is optional
 #
-# [*add_tag*] 
+# [*add_tag*]
 #   If this filter is successful, add arbitrary tags to the event. Tags
 #   can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     add_tag =&gt; [
@@ -27,51 +27,51 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*convert*] 
+# [*convert*]
 #   Convert a field's value to a different type, like turning a string to
 #   an integer. If the field value is an array, all members will be
 #   converted. If the field is a hash, no action will be taken.  Valid
-#   conversion targets are: integer, float, string  Example:  filter {  
+#   conversion targets are: integer, float, string  Example:  filter {
 #   mutate {     convert =&gt; [ "fieldname", "integer" ]   } }
 #   Value type is hash
 #   Default value: None
 #   This variable is optional
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*gsub*] 
+# [*gsub*]
 #   Convert a string field by applying a regular expression and a
-#   replacement if the field is not a string, no action will be taken 
+#   replacement if the field is not a string, no action will be taken
 #   this configuration takes an array consisting of 3 elements per
 #   field/substitution  be aware of escaping any backslash in the config
 #   file  for example:     mutate {    …  gsub =&gt; [    "fieldname",
-#   "\\/", "_",      #replace all forward slashes with underscore   
+#   "\\/", "_",      #replace all forward slashes with underscore
 #   "fieldname", "[\\?#-]", "_"   #replace backslashes, question marks,
 #   hashes and minuses with underscore  ]   …      }
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*lowercase*] 
-#   Convert a string to its lowercase equivalent  Example:    mutate { 
+# [*lowercase*]
+#   Convert a string to its lowercase equivalent  Example:    mutate {
 #   lowercase =&gt; [ "fieldname" ]     }
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*remove*] 
+# [*remove*]
 #   Remove one or more fields.  Example:  filter {   mutate {     remove
 #   =&gt; [ "client" ]  # Removes the 'client' field   } }
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*remove_tag*] 
+# [*remove_tag*]
 #   If this filter is successful, remove arbitrary tags from the event.
 #   Tags can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     remove_tag =&gt; [
@@ -82,7 +82,7 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*rename*] 
+# [*rename*]
 #   Rename one or more fields.  Example:  filter {   mutate {     #
 #   Renames the 'HOSTORIP' field to 'client_ip'     rename =&gt; [
 #   "HOSTORIP", "client_ip" ]   } }
@@ -90,23 +90,23 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*replace*] 
+# [*replace*]
 #   Replace a field with a new value. The new value can include %{foo}
-#   strings to help you build a new value from other parts of the event. 
+#   strings to help you build a new value from other parts of the event.
 #   Example:  filter {   mutate {     replace =&gt; [ "@message",
 #   "%{source_host}: My new message" ]   } }
 #   Value type is hash
 #   Default value: None
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this filter will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -114,8 +114,8 @@
 #   Default value: ""
 #   This variable is optional
 #
-# [*uppercase*] 
-#   Convert a string to its uppercase equivalent  Example:     mutate {  
+# [*uppercase*]
+#   Convert a string to its uppercase equivalent  Example:     mutate {
 #   uppercase =&gt; [ "fieldname" ]      }
 #   Value type is array
 #   Default value: None
@@ -125,7 +125,7 @@
 #   The order variable decides in which sequence the filters are loaded.
 #   Value type is number
 #   Default value: 10
-#   This variable is optional  
+#   This variable is optional
 #
 #
 # === Examples
@@ -243,7 +243,7 @@ define logstash::filter::mutate(
     }
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -257,6 +257,6 @@ define logstash::filter::mutate(
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
