@@ -17,8 +17,7 @@
     "_default_": { 
 <% if @all_disabled == true -%>
       "_all": { "enabled": false },
-<% end -%>
-<% if @source_compress == true -%>      
+<% end -%><% if @source_compress == true -%>      
       "_source": { "compress": true },
 <% end -%>
       "dynamic_templates": [
