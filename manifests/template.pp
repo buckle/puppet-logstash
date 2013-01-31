@@ -4,7 +4,7 @@ class logstash::template(
   $number_of_replicas             = 1,
   $query_default_field            = '@message',
   $store_compress                 = true,
-  $all_enabled                    = false,
+  $all_disabled                   = true,
   $source_compress                = true,
   $elasticsearch_user             = 'elasticsearch',
   $elasticsearch_group            = 'elasticsearch',
@@ -17,7 +17,7 @@ class logstash::template(
     group       => $elasticsearch_group,
   }
 
-  file { "${elasticsearch_config_path}/templates/${name}.json":
+  file { "${elasticsearch_config_path}/templates/logstash.json":
     ensure      => present,
     mode        => '0644',
     owner       => $elasticsearch_user,

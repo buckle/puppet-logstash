@@ -15,8 +15,8 @@
   },
   "mappings": {
     "_default_": { 
-<% if @all_enabled == true -%>
-      "_all": { "enabled": true },
+<% if @all_disabled == true -%>
+      "_all": { "enabled": false },
 <% end -%>
 <% if @source_compress == true -%>      
       "_source": { "compress": true },
