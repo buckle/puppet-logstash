@@ -68,7 +68,7 @@ class logstash::package(
     package { 'curl': }
 
     # pull in the logstash jar over http
-    exec { "curl -ko $logstash_home/$logstash_jar $logstash_url":
+    exec { "curl -o $logstash_home/$logstash_jar $logstash_url":
       timeout => 0,
       cwd     => "/tmp",
       creates => "$logstash_home/$logstash_jar",
