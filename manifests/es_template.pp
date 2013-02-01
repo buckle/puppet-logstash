@@ -1,4 +1,4 @@
-class logstash::template(
+class logstash::es_template(
   $template_name                  = 'logstash-*',
   $number_of_shards               = 5,
   $number_of_replicas             = 1,
@@ -15,6 +15,7 @@ class logstash::template(
     mode        => '0644',
     owner       => $elasticsearch_user,
     group       => $elasticsearch_group,
+    require     => Class['elasticsearch'],
   }
 
   file { "${elasticsearch_config_path}/templates/logstash.json":
@@ -23,5 +24,6 @@ class logstash::template(
     owner       => $elasticsearch_user,
     group       => $elasticsearch_group,
     content     => template("${module_name}/elasticsearch_template.json.erb"),
+    require     => [Class['elasticsearch'],File["${elasticsearch_config_path}/templates"]],
   }
 }
