@@ -139,7 +139,7 @@ define logstash::input::lumberjack(
     if ! is_numeric($port) {
       fail("\"${port}\" is not a valid port parameter value")
     } else {
-      $opt_port = "  port => \"${port}\"\n"
+      $opt_port = "  port => ${port}\n"
     }
   }
 
