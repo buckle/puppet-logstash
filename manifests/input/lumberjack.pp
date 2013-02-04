@@ -7,31 +7,31 @@
 #
 # === Parameters
 #
-# [*add_field*] 
+# [*add_field*]
 #   Add a field to an event
 #   Value type is hash
 #   Default value: {}
 #   This variable is optional
 #
-# [*debug*] 
+# [*debug*]
 #   Set this to true to enable debugging on an input.
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*format*] 
+# [*format*]
 #   The format of input data (plain, json, json_event)
 #   Value can be any of: "plain", "json", "json_event"
 #   Default value: None
 #   This variable is optional
 #
-# [*host*] 
+# [*host*]
 #   the address to listen on.
 #   Value type is string
 #   Default value: "0.0.0.0"
 #   This variable is optional
 #
-# [*message_format*] 
+# [*message_format*]
 #   If format is "json", an event sprintf string to build what the display
 #   @message should be given (defaults to the raw JSON). sprintf format
 #   strings look like %{fieldname} or %{@metadata}.  If format is
@@ -41,38 +41,38 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*port*] 
+# [*port*]
 #   the port to listen on.
 #   Value type is number
 #   Default value: None
 #   This variable is required
 #
-# [*ssl_certificate*] 
+# [*ssl_certificate*]
 #   ssl certificate to use
 #   Value type is string
 #   Default value: None
 #   This variable is required
 #
-# [*ssl_key*] 
+# [*ssl_key*]
 #   ssl key to use
 #   Value type is string
 #   Default value: None
 #   This variable is required
 #
-# [*ssl_key_passphrase*] 
+# [*ssl_key_passphrase*]
 #   ssl key passphrase to use
 #   Value type is password
 #   Default value: None
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Add any number of arbitrary tags to your event.  This can help with
 #   processing later.
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   Label this input with a type. Types are used mainly for filter
 #   activation.  If you create an input with type "foobar", then only
 #   filters which also have type "foobar" will act on them.  The type is
@@ -149,32 +149,32 @@ define logstash::input::lumberjack(
     }
   }
 
-  if $ssl_key_passphrase { 
+  if $ssl_key_passphrase {
     validate_string($ssl_key_passphrase)
     $opt_ssl_key_passphrase = "  ssl_key_passphrase => \"${ssl_key_passphrase}\"\n"
   }
 
-  if $ssl_key { 
+  if $ssl_key {
     validate_string($ssl_key)
     $opt_ssl_key = "  ssl_key => \"${ssl_key}\"\n"
   }
 
-  if $ssl_certificate { 
+  if $ssl_certificate {
     validate_string($ssl_certificate)
     $opt_ssl_certificate = "  ssl_certificate => \"${ssl_certificate}\"\n"
   }
 
-  if $message_format { 
+  if $message_format {
     validate_string($message_format)
     $opt_message_format = "  message_format => \"${message_format}\"\n"
   }
 
-  if $host { 
+  if $host {
     validate_string($host)
     $opt_host = "  host => \"${host}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -183,11 +183,11 @@ define logstash::input::lumberjack(
 
   file { "${logstash::params::configdir}/input_lumberjack_${name}":
     ensure  => present,
-    content => "input {\n lumberjack {\n${opt_add_field}${opt_debug}${opt_format}${opt_host}${opt_message_format}${opt_port}${opt_ssl_certificate}${opt_ssl_key}${opt_ssl_key_passphrase}${opt_tags}${opt_type} }\n}\n",
+    content => "input {\n lumberjack {\n${opt_add_field}${opt_debug}${opt_format}${opt_host}${opt_message_format}${port}${opt_ssl_certificate}${opt_ssl_key}${opt_ssl_key_passphrase}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
