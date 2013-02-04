@@ -138,6 +138,8 @@ define logstash::input::lumberjack(
   if $port {
     if ! is_numeric($port) {
       fail("\"${port}\" is not a valid port parameter value")
+    } else {
+      $opt_port = "  port => \"${port}\"\n"
     }
   }
 
@@ -183,7 +185,7 @@ define logstash::input::lumberjack(
 
   file { "${logstash::params::configdir}/input_lumberjack_${name}":
     ensure  => present,
-    content => "input {\n lumberjack {\n${opt_add_field}${opt_debug}${opt_format}${opt_host}${opt_message_format}${port}${opt_ssl_certificate}${opt_ssl_key}${opt_ssl_key_passphrase}${opt_tags}${opt_type} }\n}\n",
+    content => "input {\n lumberjack {\n${opt_add_field}${opt_debug}${opt_format}${opt_host}${opt_message_format}${opt_port}${opt_ssl_certificate}${opt_ssl_key}${opt_ssl_key_passphrase}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
