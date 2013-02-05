@@ -6,7 +6,7 @@
 #   filter was to allow joining of multi-line messages from files into a
 #   single event. For example - joining java exception and stacktrace
 #   messages into a single event.  TODO(sissel): Document any issues? The
-#   config looks like this:  filter {   multiline {     type =&gt; "type" 
+#   config looks like this:  filter {   multiline {     type =&gt; "type"
 #   pattern =&gt; "pattern, a regexp"     negate =&gt; boolean     what
 #   =&gt; "previous" or "next"   } }   The 'regexp' should match what you
 #   believe to be an indicator that the field is part of a multi-line
@@ -16,18 +16,18 @@
 #   will constitute a match of the multiline filter and the what will be
 #   applied. (vice-versa is also true)  For example, java stack traces are
 #   multiline and usually have the message starting at the far-left, then
-#   each subsequent line indented. Do this:  filter {   multiline {    
+#   each subsequent line indented. Do this:  filter {   multiline {
 #   type =&gt; "somefiletype"     pattern =&gt; "^\s"     what =&gt;
 #   "previous"   } }   This says that any line starting with whitespace
 #   belongs to the previous line.  Another example is C line continuations
 #   (backslash). Here's how to do that:  filter {   multiline {     type
-#   =&gt; "somefiletype "     pattern =&gt; "\\$"     what =&gt; "next"  
+#   =&gt; "somefiletype "     pattern =&gt; "\\$"     what =&gt; "next"
 #   } }
 #
 #
 # === Parameters
 #
-# [*add_field*] 
+# [*add_field*]
 #   If this filter is successful, add any arbitrary fields to this event.
 #   Example:  filter {   myfilter {     add_field =&gt; [ "sample", "Hello
 #   world, from %{@source}" ]   } }    On success, myfilter will then add
@@ -37,7 +37,7 @@
 #   Default value: {}
 #   This variable is optional
 #
-# [*add_tag*] 
+# [*add_tag*]
 #   If this filter is successful, add arbitrary tags to the event. Tags
 #   can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     add_tag =&gt; [
@@ -47,26 +47,26 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*negate*] 
+# [*negate*]
 #   Negate the regexp pattern ('if not matched')
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*pattern*] 
+# [*pattern*]
 #   The regular expression to match
 #   Value type is string
 #   Default value: None
 #   This variable is optional
 #
-# [*patterns_dir*] 
+# [*patterns_dir*]
 #   logstash ships by default with a bunch of patterns, so you don't
 #   necessarily need to define this yourself unless you are adding
 #   additional patterns.  Pattern files are plain text with format:  NAME
@@ -75,7 +75,7 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*remove_tag*] 
+# [*remove_tag*]
 #   If this filter is successful, remove arbitrary tags from the event.
 #   Tags can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     remove_tag =&gt; [
@@ -86,7 +86,7 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*stream_identity*] 
+# [*stream_identity*]
 #   The stream identity is how the multiline filter determines which
 #   stream an event belongs. This is generally used for differentiating,
 #   say, events coming from multiple files in the same file input, or
@@ -102,14 +102,14 @@
 #   Default value: "%{@source}.%{@type}"
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this filter will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -117,7 +117,7 @@
 #   Default value: ""
 #   This variable is optional
 #
-# [*what*] 
+# [*what*]
 #   If the pattern matched, does event belong to the next or previous
 #   event?
 #   Value can be any of: "previous", "next"
@@ -128,7 +128,7 @@
 #   The order variable decides in which sequence the filters are loaded.
 #   Value type is number
 #   Default value: 10
-#   This variable is optional  
+#   This variable is optional
 #
 #
 # === Examples
@@ -221,17 +221,17 @@ define logstash::filter::multiline(
     }
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
 
-  if $pattern { 
+  if $pattern {
     validate_string($pattern)
     $opt_pattern = "  pattern => \"${pattern}\"\n"
   }
 
-  if $stream_identity { 
+  if $stream_identity {
     validate_string($stream_identity)
     $opt_stream_identity = "  stream_identity => \"${stream_identity}\"\n"
   }
@@ -245,6 +245,6 @@ define logstash::filter::multiline(
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
