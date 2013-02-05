@@ -8,14 +8,14 @@
 #
 # === Parameters
 #
-# [*(?-mix:[A-Za-z0-9_-]+)*] 
+# [*(?-mix:[A-Za-z0-9_-]+)*]
 #   Config for grep is:   fieldname: pattern   Allow arbitrary keys for
 #   this config.
 #   Value type is string
 #   Default value: None
 #   This variable is optional
 #
-# [*add_field*] 
+# [*add_field*]
 #   If this filter is successful, add any arbitrary fields to this event.
 #   Example:  filter {   myfilter {     add_field =&gt; [ "sample", "Hello
 #   world, from %{@source}" ]   } }    On success, myfilter will then add
@@ -25,7 +25,7 @@
 #   Default value: {}
 #   This variable is optional
 #
-# [*add_tag*] 
+# [*add_tag*]
 #   If this filter is successful, add arbitrary tags to the event. Tags
 #   can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     add_tag =&gt; [
@@ -35,7 +35,7 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*drop*] 
+# [*drop*]
 #   Drop events that don't match  If this is set to false, no events will
 #   be dropped at all. Rather, the requested tags and fields will be added
 #   to matching events, and non-matching events will be passed through
@@ -44,14 +44,14 @@
 #   Default value: true
 #   This variable is optional
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*match*] 
+# [*match*]
 #   A hash of matches of field =&gt; regexp.  If multiple matches are
 #   specified, all must match for the grep to be considered successful.
 #   Normal regular expressions are supported here.
@@ -59,7 +59,7 @@
 #   Default value: {}
 #   This variable is optional
 #
-# [*negate*] 
+# [*negate*]
 #   Negate the match. Similar to 'grep -v'  If this is set to true, then
 #   any positive matches will result in the event being cancelled and
 #   dropped. Non-matching will be allowed through.
@@ -67,7 +67,7 @@
 #   Default value: false
 #   This variable is optional
 #
-# [*remove_tag*] 
+# [*remove_tag*]
 #   If this filter is successful, remove arbitrary tags from the event.
 #   Tags can be dynamic and include parts of the event using the %{field}
 #   syntax. Example:  filter {   myfilter {     remove_tag =&gt; [
@@ -78,14 +78,14 @@
 #   Default value: []
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this filter will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -97,7 +97,7 @@
 #   The order variable decides in which sequence the filters are loaded.
 #   Value type is number
 #   Default value: 10
-#   This variable is optional  
+#   This variable is optional
 #
 #
 # === Examples
@@ -185,7 +185,7 @@ define logstash::filter::grep(
     }
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -199,6 +199,6 @@ define logstash::filter::grep(
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
