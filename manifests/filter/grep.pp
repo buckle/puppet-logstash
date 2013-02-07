@@ -157,7 +157,7 @@ define logstash::filter::grep(
     $opt_exclude_tags = "  exclude_tags => ['${arr_exclude_tags}']\n"
   }
 
-  if !$drop {
+  if $drop != true {
     validate_bool($drop)
     $opt_drop = "  drop => ${drop}\n"
   }
