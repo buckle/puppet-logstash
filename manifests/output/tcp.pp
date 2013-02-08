@@ -7,48 +7,48 @@
 #
 # === Parameters
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*fields*] 
+# [*fields*]
 #   Only handle events with all of these fields. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*host*] 
+# [*host*]
 #   When mode is server, the address to listen on. When mode is client,
 #   the address to connect to.
 #   Value type is string
 #   Default value: None
 #   This variable is required
 #
-# [*mode*] 
+# [*mode*]
 #   Mode to operate in. server listens for client connections, client
 #   connects to a server.
 #   Value can be any of: "server", "client"
 #   Default value: "client"
 #   This variable is optional
 #
-# [*port*] 
+# [*port*]
 #   When mode is server, the port to listen on. When mode is client, the
 #   port to connect to.
 #   Value type is number
 #   Default value: None
 #   This variable is required
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this output will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -120,12 +120,12 @@ define logstash::output::tcp(
     }
   }
 
-  if $host { 
+  if $host {
     validate_string($host)
     $opt_host = "  host => \"${host}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -134,11 +134,11 @@ define logstash::output::tcp(
 
   file { "${logstash::params::configdir}/output_tcp_${name}":
     ensure  => present,
-    content => "output {\n tcp {\n${opt_exclude_tags}${opt_fields}${opt_host}${opt_mode}${opt_port}${opt_tags}${opt_type} }\n}\n",
+    content => "output {\n tcp {\n${opt_exclude_tags}${opt_fields}${opt_host}${opt_mode}${port}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
