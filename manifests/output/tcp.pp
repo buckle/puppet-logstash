@@ -109,6 +109,8 @@ define logstash::output::tcp(
   if $port {
     if ! is_numeric($port) {
       fail("\"${port}\" is not a valid port parameter value")
+    } else {
+      $opt_port = "  port => ${port} \n"
     }
   }
 
@@ -134,7 +136,7 @@ define logstash::output::tcp(
 
   file { "${logstash::params::configdir}/output_tcp_${name}":
     ensure  => present,
-    content => "output {\n tcp {\n${opt_exclude_tags}${opt_fields}${opt_host}${opt_mode}${port}${opt_tags}${opt_type} }\n}\n",
+    content => "output {\n tcp {\n${opt_exclude_tags}${opt_fields}${opt_host}${opt_mode}${opt_port}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
