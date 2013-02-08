@@ -4,7 +4,7 @@
 #   to graphite.  The general idea is that you send statsd count or
 #   latency data and every few seconds it will emit the aggregated values
 #   to graphite (aggregates like average, max, stddev, etc)  You can learn
-#   about statsd here: 
+#   about statsd here:
 #   http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/
 #   https://github.com/etsy/statsd A simple example usage of this is to
 #   count HTTP hits by response code; to learn more about that, check out
@@ -13,88 +13,88 @@
 #
 # === Parameters
 #
-# [*count*] 
+# [*count*]
 #   A count metric. metric_name =&gt; count as hash
 #   Value type is hash
 #   Default value: {}
 #   This variable is optional
 #
-# [*debug*] 
+# [*debug*]
 #   The final metric sent to statsd will look like the following (assuming
 #   defaults) logstash.sender.file_name  Enable debugging output?
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*decrement*] 
+# [*decrement*]
 #   A decrement metric. metric names as array.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*fields*] 
+# [*fields*]
 #   Only handle events with all of these fields. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*host*] 
+# [*host*]
 #   The address of the Statsd server.
 #   Value type is string
 #   Default value: "localhost"
 #   This variable is optional
 #
-# [*increment*] 
+# [*increment*]
 #   An increment metric. metric names as array.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*namespace*] 
+# [*namespace*]
 #   The statsd namespace to use for this metric
 #   Value type is string
 #   Default value: "logstash"
 #   This variable is optional
 #
-# [*port*] 
+# [*port*]
 #   The port to connect to on your statsd server.
 #   Value type is number
 #   Default value: 8125
 #   This variable is optional
 #
-# [*sample_rate*] 
+# [*sample_rate*]
 #   The sample rate for the metric
 #   Value type is number
 #   Default value: 1
 #   This variable is optional
 #
-# [*sender*] 
+# [*sender*]
 #   The name of the sender. Dots will be replaced with underscores
 #   Value type is string
 #   Default value: "%{@source_host}"
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*timing*] 
+# [*timing*]
 #   A timing metric. metric_name =&gt; duration as hash
 #   Value type is hash
 #   Default value: {}
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this output will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -200,22 +200,22 @@ define logstash::output::statsd(
     }
   }
 
-  if $namespace { 
+  if $namespace {
     validate_string($namespace)
     $opt_namespace = "  namespace => \"${namespace}\"\n"
   }
 
-  if $sender { 
+  if $sender {
     validate_string($sender)
     $opt_sender = "  sender => \"${sender}\"\n"
   }
 
-  if $host { 
+  if $host {
     validate_string($host)
     $opt_host = "  host => \"${host}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -224,11 +224,11 @@ define logstash::output::statsd(
 
   file { "${logstash::params::configdir}/output_statsd_${name}":
     ensure  => present,
-    content => "output {\n statsd {\n${opt_count}${opt_debug}${opt_decrement}${opt_exclude_tags}${opt_fields}${opt_host}${opt_increment}${opt_namespace}${opt_port}${opt_sample_rate}${opt_sender}${opt_tags}${opt_timing}${opt_type} }\n}\n",
+    content => "output {\n statsd {\n${opt_count}${opt_debug}${opt_decrement}${opt_exclude_tags}${opt_fields}${opt_host}${opt_increment}${opt_namespace}${port}${sample_rate}${opt_sender}${opt_tags}${opt_timing}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
