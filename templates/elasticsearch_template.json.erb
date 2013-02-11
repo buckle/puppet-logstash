@@ -1,44 +1,44 @@
 {
   "<%=template_name %>":{
-  "template": "<%=match_pattern %>",
-  "settings": {
-    "number_of_shards": <%=number_of_shards %>,
-    "number_of_replicas": <%=number_of_replicas %>,
-    "index": {
-      "query" : { "default_field" : "<%=query_default_field %>" },
+    "template": "<%=match_pattern %>",
+    "settings": {
+      "number_of_shards": <%=number_of_shards %>,
+      "number_of_replicas": <%=number_of_replicas %>,
+      "index": {
+        "query" : { "default_field" : "<%=query_default_field %>" },
 <% if @store_compress == true -%>
-      "store" : { "compress" : { "stored" : true, "tv": true } }
+        "store" : { "compress" : { "stored" : true, "tv": true } }
 <% end -%>
-    }
-  },
-  "mappings": {
-    "_default_": { 
+      }
+    },
+    "mappings": {
+      "_default_": { 
 <% if @all_disabled == true -%>
-      "_all": { "enabled": false },
+        "_all": { "enabled": false },
 <% end -%>
 <% if @source_compress == true -%>
-      "_source": { "compress": true },
+        "_source": { "compress": true },
 <% end -%>
-      "dynamic_templates": [
-        {
-          "string_template" : { 
-            "match" : "*",
-            "mapping": { "type": "string", "index": "not_analyzed" },
-            "match_mapping_type" : "string"
-          } 
+        "dynamic_templates": [
+          {
+            "string_template" : { 
+              "match" : "*",
+              "mapping": { "type": "string", "index": "not_analyzed" },
+              "match_mapping_type" : "string"
+            } 
+          }
+        ],
+        "properties" : {
+          "@fields": { "type": "object", "dynamic": true, "path": "full" }, 
+          "@message" : { "type" : "string", "index" : "analyzed" },
+          "@source" : { "type" : "string", "index" : "not_analyzed" },
+          "@source_host" : { "type" : "string", "index" : "not_analyzed" },
+          "@source_path" : { "type" : "string", "index" : "not_analyzed" },
+          "@tags": { "type": "string", "index" : "not_analyzed" }, 
+          "@timestamp" : { "type" : "date", "index" : "not_analyzed" },
+          "@type" : { "type" : "string", "index" : "not_analyzed" }
         }
-      ],
-      "properties" : {
-        "@fields": { "type": "object", "dynamic": true, "path": "full" }, 
-        "@message" : { "type" : "string", "index" : "analyzed" },
-        "@source" : { "type" : "string", "index" : "not_analyzed" },
-        "@source_host" : { "type" : "string", "index" : "not_analyzed" },
-        "@source_path" : { "type" : "string", "index" : "not_analyzed" },
-        "@tags": { "type": "string", "index" : "not_analyzed" }, 
-        "@timestamp" : { "type" : "date", "index" : "not_analyzed" },
-        "@type" : { "type" : "string", "index" : "not_analyzed" }
       }
     }
   }
 }
-
