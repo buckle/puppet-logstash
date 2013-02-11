@@ -1,5 +1,4 @@
 class logstash::es_template(
-  $template_name                  = 'logstash',
   $match_pattern                  = 'logstash-*',
   $number_of_shards               = 5,
   $number_of_replicas             = 1,
