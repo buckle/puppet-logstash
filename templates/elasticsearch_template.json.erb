@@ -1,8 +1,6 @@
-# Managed by puppet
-# elasticsearch logstash index template file
-
 {
-  "template": "<%=template_name %>",
+  "<%=template_name %>":{
+  "template": "<%=match_pattern %>",
   "settings": {
     "number_of_shards": <%=number_of_shards %>,
     "number_of_replicas": <%=number_of_replicas %>,
