@@ -6,7 +6,7 @@
 #
 # === Parameters
 #
-# [*batch*] 
+# [*batch*]
 #   Set to true if you want redis to batch up values and send 1 RPUSH
 #   command instead of one command per value to push on the list.  Note
 #   that this only works with data_type="list" mode right now.  If true,
@@ -16,21 +16,21 @@
 #   Default value: false
 #   This variable is optional
 #
-# [*batch_events*] 
+# [*batch_events*]
 #   If batch is set to true, the number of events we queue up for an
 #   RPUSH.
 #   Value type is number
 #   Default value: 50
 #   This variable is optional
 #
-# [*batch_timeout*] 
+# [*batch_timeout*]
 #   If batch is set to true, the maximum amount of time between RPUSH
 #   commands when there are pending events to flush.
 #   Value type is number
 #   Default value: 5
 #   This variable is optional
 #
-# [*data_type*] 
+# [*data_type*]
 #   Either list or channel.  If redistype is list, then we will RPUSH to
 #   key. If redistype is channel, then we will PUBLISH to key. TODO set
 #   required true
@@ -38,72 +38,72 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*db*] 
+# [*db*]
 #   The redis database number.
 #   Value type is number
 #   Default value: 0
 #   This variable is optional
 #
-# [*exclude_tags*] 
+# [*exclude_tags*]
 #   Only handle events without any of these tags. Note this check is
 #   additional to type and tags.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*fields*] 
+# [*fields*]
 #   Only handle events with all of these fields. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*host*] 
+# [*host*]
 #   The hostname(s) of your redis server(s). Ports may be specified on any
-#   hostname, which will override the global port config.  For example: 
+#   hostname, which will override the global port config.  For example:
 #   "127.0.0.1" ["127.0.0.1", "127.0.0.2"] ["127.0.0.1:6380", "127.0.0.1"]
 #   Value type is array
 #   Default value: ["127.0.0.1"]
 #   This variable is optional
 #
-# [*key*] 
+# [*key*]
 #   The name of a redis list or channel. Dynamic names are valid here, for
 #   example "logstash-%{@type}". TODO set required true
 #   Value type is string
 #   Default value: None
 #   This variable is optional
 #
-# [*password*] 
+# [*password*]
 #   Password to authenticate with.  There is no authentication by default.
 #   Value type is password
 #   Default value: None
 #   This variable is optional
 #
-# [*port*] 
+# [*port*]
 #   The default port to connect on. Can be overridden on any hostname.
 #   Value type is number
 #   Default value: 6379
 #   This variable is optional
 #
-# [*shuffle_hosts*] 
+# [*shuffle_hosts*]
 #   Shuffle the host list during logstash startup.
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
 #   Value type is array
 #   Default value: []
 #   This variable is optional
 #
-# [*timeout*] 
+# [*timeout*]
 #   Redis initial connection timeout in seconds.
 #   Value type is number
 #   Default value: 5
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   The type to act on. If a type is given, then this output will only act
 #   on messages with the same type. See any input plugin's "type"
 #   attribute for more. Optional.
@@ -223,17 +223,17 @@ define logstash::output::redis(
     }
   }
 
-  if $password { 
+  if $password {
     validate_string($password)
     $opt_password = "  password => \"${password}\"\n"
   }
 
-  if $key { 
+  if $key {
     validate_string($key)
     $opt_key = "  key => \"${key}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -247,6 +247,6 @@ define logstash::output::redis(
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
