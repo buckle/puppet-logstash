@@ -6,13 +6,13 @@
 #
 # === Parameters
 #
-# [*add_field*] 
+# [*add_field*]
 #   Add a field to an event
 #   Value type is hash
 #   Default value: {}
 #   This variable is optional
 #
-# [*data_type*] 
+# [*data_type*]
 #   Either list or channel.  If redis_type is list, then we will BLPOP the
 #   key.  If redis_type is channel, then we will SUBSCRIBE to the key. If
 #   redis_type is pattern_channel, then we will PSUBSCRIBE to the key.
@@ -21,37 +21,37 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*db*] 
+# [*db*]
 #   The redis database number.
 #   Value type is number
 #   Default value: 0
 #   This variable is optional
 #
-# [*debug*] 
+# [*debug*]
 #   Set this to true to enable debugging on an input.
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*format*] 
+# [*format*]
 #   The format of input data (plain, json, json_event)
 #   Value can be any of: "plain", "json", "json_event"
 #   Default value: None
 #   This variable is optional
 #
-# [*host*] 
+# [*host*]
 #   The hostname of your redis server.
 #   Value type is string
 #   Default value: "127.0.0.1"
 #   This variable is optional
 #
-# [*key*] 
+# [*key*]
 #   The name of a redis list or channel. TODO: change required to true
 #   Value type is string
 #   Default value: None
 #   This variable is optional
 #
-# [*message_format*] 
+# [*message_format*]
 #   If format is "json", an event sprintf string to build what the display
 #   @message should be given (defaults to the raw JSON). sprintf format
 #   strings look like %{fieldname} or %{@metadata}.  If format is
@@ -61,39 +61,39 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*password*] 
+# [*password*]
 #   Password to authenticate with. There is no authentication by default.
 #   Value type is password
 #   Default value: None
 #   This variable is optional
 #
-# [*port*] 
+# [*port*]
 #   The port to connect on.
 #   Value type is number
 #   Default value: 6379
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Add any number of arbitrary tags to your event.  This can help with
 #   processing later.
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*threads*] 
+# [*threads*]
 #   Set this to the number of threads you want this input to spawn. This
 #   is the same as declaring the input multiple times
 #   Value type is number
 #   Default value: 1
 #   This variable is optional
 #
-# [*timeout*] 
+# [*timeout*]
 #   Initial connection timeout in seconds.
 #   Value type is number
 #   Default value: 5
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   Label this input with a type. Types are used mainly for filter
 #   activation.  If you create an input with type "foobar", then only
 #   filters which also have type "foobar" will act on them.  The type is
@@ -199,27 +199,27 @@ define logstash::input::redis(
     }
   }
 
-  if $password { 
+  if $password {
     validate_string($password)
     $opt_password = "  password => \"${password}\"\n"
   }
 
-  if $message_format { 
+  if $message_format {
     validate_string($message_format)
     $opt_message_format = "  message_format => \"${message_format}\"\n"
   }
 
-  if $key { 
+  if $key {
     validate_string($key)
     $opt_key = "  key => \"${key}\"\n"
   }
 
-  if $host { 
+  if $host {
     validate_string($host)
     $opt_host = "  host => \"${host}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
@@ -233,6 +233,6 @@ define logstash::input::redis(
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
