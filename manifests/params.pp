@@ -21,7 +21,7 @@ class logstash::params {
   $java_provider                  = 'package'
   $java_package                   = 'java-1.6.0-openjdk'
   $java_home                      = '/usr/lib/jvm/jre-1.6.0-openjdk.x86_64'
-  $xms_memory                     = undef
+  $xms_memory                     = ''
   $xmx_memory                     = '256M'
 
   # ensure
