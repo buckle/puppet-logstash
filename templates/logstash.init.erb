@@ -35,7 +35,7 @@ CONFIG=<%=logstash_etc.last %>
 PATTERNSPATH="<%=logstash_home %>/patterns"
 JARNAME=logstash-<%=logstash_version %>-monolithic.jar
 ADD_ARGS="<%=add_args %>"
-ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS}"
+ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS} 1>&2 /var/log/logstash/logstash.log"
 SCRIPTNAME=/etc/init.d/logstash-server
 base=logstash
  
