@@ -32,11 +32,10 @@ DESC="Logstash Daemon"
 NAME=java
 DAEMON=<%= java_home %>/bin/java
 CONFIG=<%=logstash_etc.last %>
-LOGFILE="<%=logstash_log %>/logstash.log"
 PATTERNSPATH="<%=logstash_home %>/patterns"
 JARNAME=logstash-<%=logstash_version %>-monolithic.jar
 ADD_ARGS="<%=add_args %>"
-ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --log ${LOGFILE} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS}"
+ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS}"
 SCRIPTNAME=/etc/init.d/logstash-server
 base=logstash
  
