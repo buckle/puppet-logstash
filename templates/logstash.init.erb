@@ -22,7 +22,7 @@
  
 # Amount of memory for Java
 XMX=<%=xmx_memory %>
-XMS=<%=xms_memory ? xms_memory : xmx_memory %>
+XMS=<%=xms_memory != undef ? xms_memory : xmx_memory %>
  
 # Location of logstash files
 LOCATION=<%=logstash_home %>
