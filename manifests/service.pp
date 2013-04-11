@@ -32,7 +32,8 @@ class logstash::service (
   $logstash_group             = $logstash::params::logstash_group,
   $elasticsearch_provider     = $logstash::params::elasticsearch_provider,
   $java_home                  = $logstash::params::java_home,
-  $java_memory                = $logstash::params::java_memory
+  $xms_memory                 = $logstash::params::xms_memory,
+  $xmx_memory                 = $logstash::params::xmx_memory,
 ) {
 
   Class['logstash::install'] -> Class['logstash::package'] -> Class['logstash::service']
