@@ -22,7 +22,6 @@
 #
 class logstash::service (
   $logstash_home              = $logstash::params::logstash_home,
-  $logstash_log               = $logstash::params::logstash_log,
   $logstash_etc               = $logstash::params::logstash_etc,
   $logstash_transport         = $logstash::params::logstash_transport,
   $logstash_verbose           = $logstash::params::logstash_verbose,
