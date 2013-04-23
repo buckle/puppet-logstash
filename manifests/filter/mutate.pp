@@ -99,6 +99,12 @@
 #   Default value: None
 #   This variable is optional
 #
+# [*split*]
+#   Split a field to an array using a separator character. Only works on string fields.
+#   Value type is array
+#   Default value: None
+#   This variable is optional
+#
 # [*tags*]
 #   Only handle events with all of these tags.  Note that if you specify a
 #   type, the event must also match that type. Optional.
@@ -156,6 +162,7 @@ define logstash::filter::mutate(
   $remove_tag   = '',
   $rename       = '',
   $replace      = '',
+  $split        = '',
   $tags         = '',
   $type         = '',
   $uppercase    = '',
@@ -193,6 +200,12 @@ define logstash::filter::mutate(
     validate_array($gsub)
     $arr_gsub = join($gsub, "', '")
     $opt_gsub = "  gsub => ['${arr_gsub}']\n"
+  }
+
+  if $split {
+    validate_array($split)
+    $arr_split = join($split, "', '")
+    $opt_split = "  split => ['${arr_split}']\n"
   }
 
   if $lowercase {
@@ -252,7 +265,7 @@ define logstash::filter::mutate(
 
   file { "${logstash::params::configdir}/filter_${order}_mutate_${name}":
     ensure  => present,
-    content => "filter {\n mutate {\n${opt_add_field}${opt_add_tag}${opt_convert}${opt_exclude_tags}${opt_gsub}${opt_lowercase}${opt_remove}${opt_remove_tag}${opt_rename}${opt_replace}${opt_tags}${opt_type}${opt_uppercase} }\n}\n",
+    content => "filter {\n mutate {\n${opt_add_field}${opt_add_tag}${opt_convert}${opt_exclude_tags}${opt_gsub}${opt_split}${opt_lowercase}${opt_remove}${opt_remove_tag}${opt_rename}${opt_replace}${opt_tags}${opt_type}${opt_uppercase} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
