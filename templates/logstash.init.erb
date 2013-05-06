@@ -27,6 +27,9 @@ ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --grok-patterns
 SCRIPTNAME=/etc/init.d/logstash-server
 base=logstash
 
+# Location of logstash files
+LOCATION=<%=logstash_home %>
+
 function missing_jar() { 
     echo "Failed to find logstash jar file: [$LOGSTASH]"; 
     echo "Check /etc/init.d/logstash file for correct settings."
@@ -34,7 +37,7 @@ function missing_jar() {
     exit 1;
 }
 
-test -f $LOGSTASH || missing_jar
+test -f $LOCATION/$LOGSTASH || missing_jar
 
 . /etc/rc.d/init.d/functions
 
@@ -45,7 +48,7 @@ case "$1" in
   echo -n "Starting logstash: "
   
   #check to see if we're already running
-  pgrep -f ${LOGSTASH} > /dev/null
+  pgrep -f ${JARNAME} > /dev/null
   RUNNING=$?
   if [ $RUNNING -eq 0 ]; then     
       echo "[FAILED]"
@@ -56,7 +59,9 @@ case "$1" in
   fi
   
   #start it up
-  daemon "$DAEMON ARGS &" 2> $LOGFILE;
+  cd $LOCATION && \
+  ($DAEMON $ARGS & 2> $LOGFILE) \
+  && success || failure
   pgrep -f ${LOGSTASH} > /var/run/logstash.pid #record PID in pid file
   RETVAL=$?
   echo
