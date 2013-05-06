@@ -30,15 +30,6 @@ base=logstash
 # Location of logstash files
 LOCATION=<%=logstash_home %>
 
-function missing_jar() { 
-    echo "Failed to find logstash jar file: [$LOGSTASH]"; 
-    echo "Check /etc/init.d/logstash file for correct settings."
-    RETVAL=1; 
-    exit 1;
-}
-
-test -f $LOCATION/$LOGSTASH || missing_jar
-
 . /etc/rc.d/init.d/functions
 
 RETVAL=0
@@ -62,7 +53,7 @@ case "$1" in
   cd $LOCATION && \
   ($DAEMON $ARGS & 2> $LOGFILE) \
   && success || failure
-  pgrep -f ${LOGSTASH} > /var/run/logstash.pid #record PID in pid file
+  pgrep -f ${JARNAME} > /var/run/logstash.pid #record PID in pid file
   RETVAL=$?
   echo
   if [ $RETVAL -eq 0 ]; then     
@@ -70,7 +61,7 @@ case "$1" in
   else 
       echo "RETVAL for daemon = $RETVAL"
       echo "PID missing for logstash, PID value not recorded. Something is wrong!"
-      pgrep ${LOGSTASH}
+      pgrep ${JARNAME}
   fi 
   ;;
     
