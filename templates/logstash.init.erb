@@ -1,31 +1,17 @@
-#! /bin/sh
+#!/bin/sh
 #
-# /etc/rc.d/init.d/logstash
+# chkconfig: 2345 70 40
+# description: logstash startup script
+# author: Michael Ladd with several improvements by Matt Reid
+# websites: http://www.mjladd.com && http://themattreid.com
+# license: GPL v2
+# date: 2012-12-06
+# version: 0000.1
 #
-# Starts Logstash as a daemon
-#
-# chkconfig: 2345 20 80
-# description: Starts Logstash as a daemon
-# pidfile: /var/run/logstash-agent.pid
- 
-### BEGIN INIT INFO
-# Provides: logstash
-# Required-Start: $local_fs $remote_fs
-# Required-Stop: $local_fs $remote_fs
-# Default-Start: 2 3 4 5
-# Default-Stop: S 0 1 6
-# Short-Description: Logstash
-# Description: Starts Logstash as a daemon.
-# Author: christian.paredes@sbri.org, modified by https://github.com/paul-at
- 
-### END INIT INFO
- 
+
 # Amount of memory for Java
 XMX=<%=xmx_memory %>
 XMS=<%=xms_memory != '' ? xms_memory : xmx_memory %>
- 
-# Location of logstash files
-LOCATION=<%=logstash_home %>
  
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DESC="Logstash Daemon"
@@ -36,77 +22,74 @@ LOGFILE="<%=logstash_log %>/logstash.log"
 PATTERNSPATH="<%=logstash_home %>/patterns"
 JARNAME=logstash-<%=logstash_version %>-monolithic.jar
 ADD_ARGS="<%=add_args %>"
-ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --log ${LOGFILE} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS}"
+ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS}"
+#ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --log ${LOGFILE} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS}"
 SCRIPTNAME=/etc/init.d/logstash-server
 base=logstash
- 
-# Exit if the package is not installed
-if [ ! -x "$DAEMON" ]; then
-{
-  echo "Couldn't find $DAEMON"
-  exit 99
+
+function missing_jar() { 
+    echo "Failed to find logstash jar file: [$LOGSTASH]"; 
+    echo "Check /etc/init.d/logstash file for correct settings."
+    RETVAL=1; 
+    exit 1;
 }
-fi
- 
-. /etc/init.d/functions
- 
-#
-# Function that starts the daemon/service
-#
-do_start()
-{
-  cd $LOCATION && \
-  ($DAEMON $ARGS &) \
-  && success || failure
-}
- 
-#
-# Function that stops the daemon/service
-#
-do_stop()
-{
-  pid=`ps auxww | grep 'logstash.*monolithic' | grep java | awk '{print $2}'`
-                       if checkpid $pid 2>&1; then
-                           # TERM first, then KILL if not dead
-                           kill -TERM $pid >/dev/null 2>&1
-                           usleep 100000
-                           if checkpid $pid && sleep 1 &&
-                              checkpid $pid && sleep $delay &&
-                              checkpid $pid ; then
-                                kill -KILL $pid >/dev/null 2>&1
-                                usleep 100000
-                           fi
-                        fi
-                        checkpid $pid
-                        RC=$?
-                        [ "$RC" -eq 0 ] && failure $"$base shutdown" || success $"$base shutdown"
- 
-}
- 
+
+test -f $LOGSTASH || missing_jar
+
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+
 case "$1" in
-  start)
-    echo -n "Starting $DESC: "
-    do_start
-    touch /var/lock/subsys/$JARNAME
-    ;;
-  stop)
-    echo -n "Stopping $DESC: "
-    do_stop
-    rm /var/lock/subsys/$JARNAME
-    ;;
-  restart|reload)
-    echo -n "Restarting $DESC: "
-    do_stop
-    do_start
-    ;;
-  status)
-    status -p $PID
-    ;;
-  *)
-    echo "Usage: $SCRIPTNAME {start|stop|status|restart}" >&2
-    exit 3
-    ;;
+    start)
+  echo -n "Starting logstash: "
+  
+  #check to see if we're already running
+  pgrep -f ${LOGSTASH} > /dev/null
+  RUNNING=$?
+  if [ $RUNNING -eq 0 ]; then     
+      echo "[FAILED]"
+      echo    
+      echo "Reason: logstash is already running."
+      RETVAL=1
+      exit 1;
+  fi
+  
+  #start it up
+  daemon "$DAEMON ARGS &" 2> $LOGFILE;
+  pgrep -f ${LOGSTASH} > /var/run/logstash.pid #record PID in pid file
+  RETVAL=$?
+  echo
+  if [ $RETVAL -eq 0 ]; then     
+      touch /var/lock/subsys/logstash
+  else 
+      echo "RETVAL for daemon = $RETVAL"
+      echo "PID missing for logstash, PID value not recorded. Something is wrong!"
+      pgrep ${LOGSTASH}
+  fi 
+  ;;
+    
+    stop)
+  echo -n "Shutting down logstash: "
+  killproc logstash 
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/logstash
+  ;;
+    
+    restart|reload)
+  $0 stop
+  $0 start
+  RETVAL=$?
+  ;;
+
+    status)
+  status logstash 
+  RETVAL=$?
+  ;;
+    *)
+  echo "Usage: $0 {start|stop|restart|status}"
+  exit 1
 esac
- 
-echo
-exit 0
+
+exit $RETVAL
