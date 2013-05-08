@@ -23,7 +23,6 @@ class logstash::params {
   $java_home                      = '/usr/lib/jvm/jre-1.6.0-openjdk.x86_64'
   $xms_memory                     = ''
   $xmx_memory                     = '256M'
-  $ensure                         = 'running'
   $enable                         = true
 
   # ensure

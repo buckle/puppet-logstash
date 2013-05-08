@@ -38,6 +38,14 @@ class logstash::service (
   $enable                     = $logstash::params::enable,
 ) {
 
+  if ($ensure =~ /present|running/) {
+    $local_ensure = 'running'
+    $enabled = true
+  } elsif ($ensure =~ /installed|stopped/) {
+    $local_ensure  = 'stopped'
+    $enabled = false
+  }
+
   Class['logstash::install'] -> Class['logstash::package'] -> Class['logstash::service']
 
   if ($logstash_web) {
@@ -59,7 +67,7 @@ class logstash::service (
   }
 
   service { 'logstash-server':
-    ensure    => $ensure,
+    ensure    => $local_ensure,
     hasstatus => true,
     enable    => $enable,
   }
