@@ -34,6 +34,8 @@ class logstash::service (
   $java_home                  = $logstash::params::java_home,
   $xms_memory                 = $logstash::params::xms_memory,
   $xmx_memory                 = $logstash::params::xmx_memory,
+  $ensure                     = $logstash::params::ensure,
+  $enable                     = $logstash::params::enable,
 ) {
 
   Class['logstash::install'] -> Class['logstash::package'] -> Class['logstash::service']
@@ -57,9 +59,9 @@ class logstash::service (
   }
 
   service { 'logstash-server':
-    ensure    => 'running',
+    ensure    => $ensure,
     hasstatus => true,
-    enable    => true,
+    enable    => $enable,
   }
 
 }
