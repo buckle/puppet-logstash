@@ -13,37 +13,37 @@
 #
 # === Parameters
 #
-# [*add_field*] 
+# [*add_field*]
 #   Add a field to an event
 #   Value type is hash
 #   Default value: {}
 #   This variable is optional
 #
-# [*debug*] 
+# [*debug*]
 #   Set this to true to enable debugging on an input.
 #   Value type is boolean
 #   Default value: false
 #   This variable is optional
 #
-# [*facility_labels*] 
+# [*facility_labels*]
 #   Labels for facility levels This comes from RFC3164.
 #   Value type is array
 #   Default value: ["kernel", "user-level", "mail", "system", "security/authorization", "syslogd", "line printer", "network news", "UUCP", "clock", "security/authorization", "FTP", "NTP", "log audit", "log alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
 #   This variable is optional
 #
-# [*format*] 
+# [*format*]
 #   The format of input data (plain, json, json_event)
 #   Value can be any of: "plain", "json", "json_event"
 #   Default value: None
 #   This variable is optional
 #
-# [*host*] 
+# [*host*]
 #   The address to listen on
 #   Value type is string
 #   Default value: "0.0.0.0"
 #   This variable is optional
 #
-# [*message_format*] 
+# [*message_format*]
 #   If format is "json", an event sprintf string to build what the display
 #   @message should be given (defaults to the raw JSON). sprintf format
 #   strings look like %{fieldname} or %{@metadata}.  If format is
@@ -53,27 +53,27 @@
 #   Default value: None
 #   This variable is optional
 #
-# [*port*] 
+# [*port*]
 #   The port to listen on. Remember that ports less than 1024 (privileged
 #   ports) may require root to use.
 #   Value type is number
 #   Default value: 514
 #   This variable is optional
 #
-# [*severity_labels*] 
+# [*severity_labels*]
 #   Labels for severity levels This comes from RFC3164.
 #   Value type is array
 #   Default value: ["Emergency", "Alert", "Critical", "Error", "Warning", "Notice", "Informational", "Debug"]
 #   This variable is optional
 #
-# [*tags*] 
+# [*tags*]
 #   Add any number of arbitrary tags to your event.  This can help with
 #   processing later.
 #   Value type is array
 #   Default value: None
 #   This variable is optional
 #
-# [*type*] 
+# [*type*]
 #   Label this input with a type. Types are used mainly for filter
 #   activation.  If you create an input with type "foobar", then only
 #   filters which also have type "foobar" will act on them.  The type is
@@ -83,7 +83,7 @@
 #   Default value: None
 #   This variable is required
 #
-# [*use_labels*] 
+# [*use_labels*]
 #   Use label parsing for severity and facility levels
 #   Value type is boolean
 #   Default value: true
@@ -173,17 +173,17 @@ define logstash::input::syslog(
     }
   }
 
-  if $host { 
+  if $host {
     validate_string($host)
     $opt_host = "  host => \"${host}\"\n"
   }
 
-  if $type { 
+  if $type {
     validate_string($type)
     $opt_type = "  type => \"${type}\"\n"
   }
 
-  if $message_format { 
+  if $message_format {
     validate_string($message_format)
     $opt_message_format = "  message_format => \"${message_format}\"\n"
   }
@@ -192,11 +192,11 @@ define logstash::input::syslog(
 
   file { "${logstash::params::configdir}/input_syslog_${name}":
     ensure  => present,
-    content => "input {\n syslog {\n${opt_add_field}${opt_debug}${opt_facility_labels}${opt_format}${opt_host}${opt_message_format}${opt_port}${opt_severity_labels}${opt_tags}${opt_type}${opt_use_labels} }\n}\n",
+    content => "input {\n syslog {\n${opt_add_field}${opt_debug}${opt_facility_labels}${opt_format}${opt_host}${opt_message_format}${port}${opt_severity_labels}${opt_tags}${opt_type}${opt_use_labels} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Class['logstash::service'],
-    require => Class['logstash::package', 'logstash::config']
+    require => Class['logstash::package', 'logstash::install']
   }
 }
