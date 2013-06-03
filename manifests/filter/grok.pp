@@ -177,7 +177,7 @@ define logstash::filter::grok(
   if $pattern {
     validate_array($pattern)
     $arr_pattern = join($pattern, "', '")
-    $opt_pattern = "  pattern => ['${arr_pattern}']\n"
+    $opt_pattern = "  pattern => [\"${arr_pattern}\"]\n"
   }
 
   if $tags {
