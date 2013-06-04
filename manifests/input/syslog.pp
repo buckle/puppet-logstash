@@ -162,6 +162,8 @@ define logstash::input::syslog(
   if $port {
     if ! is_numeric($port) {
       fail("\"${port}\" is not a valid port parameter value")
+    } else {
+      $opt_port = "  port => \"${port}\"\n"
     }
   }
 
@@ -192,7 +194,7 @@ define logstash::input::syslog(
 
   file { "${logstash::params::configdir}/input_syslog_${name}":
     ensure  => present,
-    content => "input {\n syslog {\n${opt_add_field}${opt_debug}${opt_facility_labels}${opt_format}${opt_host}${opt_message_format}${port}${opt_severity_labels}${opt_tags}${opt_type}${opt_use_labels} }\n}\n",
+    content => "input {\n syslog {\n${opt_add_field}${opt_debug}${opt_facility_labels}${opt_format}${opt_host}${opt_message_format}${opt_port}${opt_severity_labels}${opt_tags}${opt_type}${opt_use_labels} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
