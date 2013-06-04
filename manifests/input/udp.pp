@@ -129,6 +129,8 @@ define logstash::input::udp(
   if $port {
     if ! is_numeric($port) {
       fail("\"${port}\" is not a valid port parameter value")
+    } else {
+      $opt_port = "  port => \"${port}\"\n"
     }
   }
 
@@ -159,7 +161,7 @@ define logstash::input::udp(
 
   file { "${logstash::params::configdir}/input_udp_${name}":
     ensure  => present,
-    content => "input {\n udp {\n${opt_add_field}${buffer_size}${opt_debug}${opt_format}${opt_host}${opt_message_format}${port}${opt_tags}${opt_type} }\n}\n",
+    content => "input {\n udp {\n${opt_add_field}${buffer_size}${opt_debug}${opt_format}${opt_host}${opt_message_format}${opt_port}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
