@@ -98,7 +98,6 @@ class logstash (
     xms_memory                  => $xms_memory,
     xmx_memory                  => $xmx_memory,
     elasticsearch_provider      => $elasticsearch_provider,
-    add_args                    => $add_args,
   }
 
   if ($logstash_transport == 'redis') {
