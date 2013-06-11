@@ -67,7 +67,6 @@ class logstash (
   $java_home                    = $logstash::params::java_home,
   $xms_memory                   = $logstash::params::xms_memory,
   $xmx_memory                   = $logstash::params::xmx_memory,
-  $add_args                     = $logstash::params::add_args,
 ) inherits logstash::params {
   class { 'logstash::install':
     logstash_home                => $logstash_home,
