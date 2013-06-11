@@ -24,6 +24,7 @@ class logstash::params {
   $xms_memory                     = ''
   $xmx_memory                     = '256M'
   $enable                         = true
+  $add_args                       = ''
 
   # ensure
   $ensure = 'present'

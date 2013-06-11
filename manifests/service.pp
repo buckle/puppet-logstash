@@ -36,6 +36,7 @@ class logstash::service (
   $xmx_memory                 = $logstash::params::xmx_memory,
   $ensure                     = $logstash::params::ensure,
   $enable                     = $logstash::params::enable,
+  $add_args                   = $logstash::params::add_args,
 ) {
 
   if ($ensure =~ /present|running/) {

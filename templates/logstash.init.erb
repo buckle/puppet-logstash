@@ -9,6 +9,9 @@
 # version: 0000.1
 #
 
+# Location of logstash files
+LOCATION=<%=logstash_home %>
+
 # Amount of memory for Java
 XMX=<%=xmx_memory %>
 XMS=<%=xms_memory != '' ? xms_memory : xmx_memory %>
@@ -22,12 +25,9 @@ LOGFILE="<%=logstash_log %>/logstash.log"
 PATTERNSPATH="<%=logstash_home %>/patterns"
 JARNAME=logstash-<%=logstash_version %>-monolithic.jar
 ADD_ARGS="<%=add_args %>"
-ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --log ${LOGFILE} --grok-patterns-path ${PATTERNSPATH} ${ADD_ARGS}"
+ARGS="-Xms$XMS -Xmx$XMX -jar ${JARNAME} agent --config ${CONFIG} --log ${LOGFILE} --grok-patterns-path ${PATTERNSPATH} --pluginpath ${LOCATION} ${ADD_ARGS}"
 SCRIPTNAME=/etc/init.d/logstash-server
 base=logstash
-
-# Location of logstash files
-LOCATION=<%=logstash_home %>
 
 . /etc/rc.d/init.d/functions
 
