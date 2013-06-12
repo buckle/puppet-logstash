@@ -82,7 +82,7 @@ class logstash (
     java_provider                => $java_provider,
     java_package                 => $java_package,
     java_home                    => $java_home
-  }
+  } ->
 
   class { 'logstash::service':
     logstash_home               => $logstash_home,
@@ -98,6 +98,10 @@ class logstash (
     xms_memory                  => $xms_memory,
     xmx_memory                  => $xmx_memory,
     elasticsearch_provider      => $elasticsearch_provider,
+  } ->
+
+  class { 'logstash::plugins':
+    pluginpath              => $logstash_home,
   }
 
   if ($logstash_transport == 'redis') {
