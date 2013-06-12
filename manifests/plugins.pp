@@ -3,7 +3,7 @@ class logstash::plugins (
 ) {
   file { "${pluginpath}/logstash":
     ensure        => 'directory',
-    source        =>  "puppet:///${module_name}/plugins",
+    source        =>  "puppet:///modules/${module_name}/plugins",
     recurse       => true,
   }
 }
