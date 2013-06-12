@@ -64,21 +64,25 @@ class LogStash::Filters::Ip2store < LogStash::Filters::Base
     end
   end
   
+  # Split off the last octet so we're left with the first 3 octets
   private
   def to_three_octets(addr)
     addr.rpartition(".")[0]
   end  
   
+  # Cache the store number with a key of the first 3 octets of the IP. Set timestamp to now.
   private 
   def cache_info(addr, store_number) 
     @store_info[addr] = { :store_number => store_number, :timestamp => Time.now.to_i }
   end
   
+  # Given a timestamp from the cache, determine if it's been more than 24 hours
   private
   def expired(timestamp)
     timestamp.to_i + 86400 < Time.now.to_i ? true : false
   end
   
+  # Validate an IP address
   private
   def validate_addr(addr)
     begin
