@@ -29,7 +29,11 @@ class LogStash::Filters::StoreGeoIP < LogStash::Filters::Base
   
   public
   def filter(event)
-    store_number = event[@field].to_i
+    return unless filter?(event)
+    
+    store_number = event[@field]
+    store_number = store_number.first if addr.is_a? Array
+    store_number = store_number.to_i
     full_url = URI.join(@service_bus_url, store_number.to_s + "/").to_s
     event[@target] = {} if event[@target].nil?
     
@@ -51,15 +55,15 @@ class LogStash::Filters::StoreGeoIP < LogStash::Filters::Base
         event[@target]['lon'] = @store_location[store_number][:lon]
       end
       
-      #filter_matched(event)
+      filter_matched(event)
       
-      rescue SocketError => e
+    rescue SocketError => e
       @logger.error "Could not find the Service Bus server. Please check DNS and verify the 'service_bus_url' configuration setting"
         
-      rescue RestClient::BadGateway => e
+     rescue RestClient::BadGateway => e
       @logger.error "Could not contact the Service Bus server.  Please check that Service Bus server is running, firewalls are not blocking the connection, and verify the 'service_bus_url' configuration setting"
         
-      rescue Exception => e
+    rescue Exception => e
       @logger.error e
         
     end

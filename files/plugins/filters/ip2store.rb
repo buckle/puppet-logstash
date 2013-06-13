@@ -30,7 +30,10 @@ class LogStash::Filters::Ip2store < LogStash::Filters::Base
   
   public
   def filter(event)
+    return unless filter?(event)
+    
     addr = event[@field]
+    addr = addr.first if addr.is_a? Array
     addr_short = to_three_octets addr
     full_url = URI.join(@service_bus_url, addr + "/").to_s
     
@@ -50,6 +53,8 @@ class LogStash::Filters::Ip2store < LogStash::Filters::Base
           
           event[@target] = @store_info[addr_short][:store_number]
         end
+        
+        filter_matched(event)
         
       rescue SocketError => e
         @logger.error "Could not find the Service Bus server. Please check DNS and verify the 'service_bus_url' configuration setting"
