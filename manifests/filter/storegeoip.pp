@@ -1,4 +1,4 @@
-# == Define: logstash::filter::ip2store
+# == Define: logstash::filter::storegeoip
 #
 #   The ip2store filter allows you to do general ip2storeations to fields that
 #   are not included in the normal mutate filter.  NOTE: The functionality
@@ -87,7 +87,7 @@
 #
 # * Richard Pijnenburg <mailto:richard@ispavailability.com>
 #
-define logstash::filter::ip2store(
+define logstash::filter::storegeoip(
   $field            = '',
   $target           = '',
   $service_bus_url  = '',
@@ -139,7 +139,7 @@ define logstash::filter::ip2store(
 
   #### Write config file
 
-  file { "${logstash::params::configdir}/filter_${order}_ip2store_${name}":
+  file { "${logstash::params::configdir}/filter_${order}_storegeoip_${name}":
     ensure  => present,
     content => "filter {\n storegeoip {\n${opt_field}${opt_target}${opt_service_bus_url}${opt_api_key}${opt_tags}${opt_type} }\n}\n",
     owner   => 'root',
