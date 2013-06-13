@@ -32,7 +32,7 @@ class LogStash::Filters::StoreGeoIP < LogStash::Filters::Base
     return unless filter?(event)
     
     store_number = event[@field]
-    store_number = store_number.first if addr.is_a? Array
+    store_number = store_number.first if store_number.is_a? Array
     store_number = store_number.to_i
     full_url = URI.join(@service_bus_url, store_number.to_s + "/").to_s
     event[@target] = {} if event[@target].nil?
