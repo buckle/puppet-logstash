@@ -52,6 +52,7 @@ case "$1" in
   cd $LOCATION && \
   ($DAEMON $ARGS &) \
   && success || failure
+  sleep 3
   pgrep -f ${JARNAME} > /var/run/logstash.pid #record PID in pid file
   RETVAL=$?
   echo
